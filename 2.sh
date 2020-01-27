@@ -63,8 +63,8 @@ user_desktop="$user_home/Desktop"
 cp /usr/share/applications/$name123 "$user_desktop"
 tar -xvf $current_dir/3D_models.tar.gz -C "$user_desktop"
 
-chmod 700 "$user_desktop/$name123"
-#WHY 700?
+chmod 777 "$user_desktop/$name123"
+#WHY 777?
 chmod 777 $user_desktop/3D_models
 
 #cp /opt/RepetierHost/repetier-RepetierHost.desktop ~/Рабочий\ стол/
