@@ -131,7 +131,7 @@ echo "installing arduino -------------------------------------------------------
 cd "$current_dir"
 sudo tar -xvf RRR1.tar.gz -C /opt
 cp -f "$current_dir/gcompris.desktop" "$homedir/Desktop"
-chmod 700 "$homedir/Desktop/gcompris.desktop"
+chmod 777 "$homedir/Desktop/gcompris.desktop"
 sudo cp -f "$current_dir/gcompris.desktop" /usr/share/applications/
 echo "I don't understand what is it but is's about gcompris.desktop-------------------------------------------------------------------"
 
