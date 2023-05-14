@@ -22,10 +22,24 @@ then
 	exit;
 fi
 
+if [ "/$SUDO_USER" != "/root" ]
+then
+	if [ "/$SUDO_USER" != "/" ]
+	then
+        if  ! [ -f ${XDG_CONFIG_HOME:-~/.config}/user-dirs.dirs ]
+        then 
+            echo "Manually detecting  user_home and user_desktop because these vars can't be auto detected in sudo mode"
+            user_home=/home/$SUDO_USER
+            user_desktop="${user_home}/Рабочий стол"
+        fi
+    fi
+fi
 
+echo $user_desktop 
 
 # exit;
 
+sudo apt update
 # delete old arduino
 #echo "please enter your user password and press enter"
 #echo "пожалуйста введите свой пароль и нажмите enter"
@@ -42,17 +56,17 @@ echo "added root and user to dialout--------------------------------------------
 
 # install all packages robboscratch needs to
 cd "$current_dir"
-sudo dpkg --add-architecture i386
-echo "add architecture i386-------------------------------------------------------------------"
-sudo apt-get -qqy update
-sudo apt-get -qqy install libgtk2.0-0:i386  libnss3:i386  libssl1.0.0:i386  libasound2:i386  libc6:i386 libgif7:i386  libjpeg8:i386 libpulse0:i386  libx11-6:i386  libxext6:i386  libxi6:i386  libxrender1:i386  libxtst6:i386  libxt6:i386  libasound2-plugins:i386
-sudo apt-get -qqy install menu avrdude wmctrl
-echo "installed menu avrdude wmctrl-------------------------------------------------------------------"
+# sudo dpkg --add-architecture i386
+# echo "add architecture i386-------------------------------------------------------------------"
+# sudo apt-get -qqy update
+# sudo apt-get -qqy install libgtk2.0-0:i386  libnss3:i386  libssl1.0.0:i386  libasound2:i386  libc6:i386 libgif7:i386  libjpeg8:i386 libpulse0:i386  libx11-6:i386  libxext6:i386  libxi6:i386  libxrender1:i386  libxtst6:i386  libxt6:i386  libasound2-plugins:i386
+ sudo apt-get -y install menu avrdude 
+echo "installed menu avrdude -------------------------------------------------------------------"
 # exit;
 
 # bluman is thru for serial bluetooth
-sudo apt-get -qqy install blueman >/dev/null
-sudo apt-get -qqy purge gnome-bluetooth
+sudo apt-get -y install blueman >/dev/null
+sudo apt-get -y purge gnome-bluetooth
 echo "installed blueman, purged gnome-bluetooth-------------------------------------------------------------------"
 # exit;
 
@@ -74,70 +88,108 @@ echo "installed blueman, purged gnome-bluetooth---------------------------------
 
 #wget http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_i386.deb
 #wget http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb
-sudo apt-get -qqy install ./libpng12-0_1.2.54-1ubuntu1.1_i386.deb
-sudo apt-get -qqy install ./libpng12-0_1.2.54-1ubuntu1.1_amd64.deb
-echo "installed libpng12-0_1.2.54*-------------------------------------------------------------------"
-# exit;
+# sudo apt-get -qqy install ./libpng12-0_1.2.54-1ubuntu1.1_i386.deb
+# sudo apt-get -qqy install ./libpng12-0_1.2.54-1ubuntu1.1_amd64.deb
+# echo "installed libpng12-0_1.2.54*-------------------------------------------------------------------"
+# # exit;
 
 #wget http://security.ubuntu.com/ubuntu/pool/universe/libg/libgksu/libgksu2-0_2.0.13~pre1-9ubuntu2_amd64.deb
 #wget http://security.ubuntu.com/ubuntu/pool/universe/g/gksu/gksu_2.0.2-9ubuntu1_amd64.deb
-sudo apt-get -qqy install ./libgksu2-0_2.0.13~pre1-9ubuntu2_amd64.deb
-sudo apt-get -qqy install ./gksu_2.0.2-9ubuntu1_amd64.deb
-echo "installed libgksu2... gksu_2.0.2...-------------------------------------------------------------------"
-# exit;
+# sudo apt-get -qqy install ./libgksu2-0_2.0.13~pre1-9ubuntu2_amd64.deb
+# sudo apt-get -qqy install ./gksu_2.0.2-9ubuntu1_amd64.deb
+# echo "installed libgksu2... gksu_2.0.2...-------------------------------------------------------------------"
+# # exit;
 
 # robbo soft install
-sudo apt-get -qqy install ./robboscratch3.22.0-x64.deb
-sudo apt-get -qqy install ./robboscratch2.1.70.deb
-sudo apt-get -qqy install ./robbojunior0.0.10-x64-nwjs.deb
+sudo apt-get -y install ./robboscratch3.50.0-x64.deb
+sudo apt-get -y install ./robbojunior0.0.15-x64.deb
 echo "installed robboscratches-------------------------------------------------------------------"
-cp -f "$current_dir/robboscratch2s.desktop" "$homedir/Desktop"
-chmod 777 $homedir/Desktop/robboscratch2s.desktop
-echo "chmod 777 robboscratch2s.desktop-------------------------------------------------------------------"
 # exit;
 
-# Scratch for Arduino s4a
-sudo apt-get -qqy install ./S4A16.deb
-echo "installed S4A16.deb-------------------------------------------------------------------"
-cp -f "$current_dir/s4a.desktop" "$homedir/Desktop"
-chmod 777 $homedir/Desktop/s4a.desktop
-echo "chmod 777 $homedir/Desktop/s4a.desktop-------------------------------------------------------------------"
-# exit;
+## Scratch for Arduino s4a
+#sudo apt-get -qqy install ./S4A16.deb
+#echo "installed S4A16.deb-------------------------------------------------------------------"
+#cp -f "$current_dir/s4a.desktop" "$user_desktop"
+#chmod 777 $user_desktop/s4a.desktop
+#echo "chmod 777 $user_desktop/s4a.desktop-------------------------------------------------------------------"
+## exit;
 
 #freecad
 sudo add-apt-repository -y ppa:freecad-maintainers/freecad-stable
-sudo apt-get -qqy update
-sudo apt-get -qqy install freecad
+sudo apt-get -y update
+sudo apt-get -y install freecad
 echo "installed freecad-------------------------------------------------------------------"
 # exit;
+
+#inkscape
+sudo add-apt-repository -y ppa:inkscape.dev/stable
+sudo apt-get -qqy update
+sudo apt-get -qqy install inkscape
+echo "installed inkscape-------------------------------------------------------------------"
+# exit;
+
+#install gcodetools
+sudo apt -qqy install python-lxml
+sudo apt -qqy install python3-pip
+sudo pip install numpy
+sudo tar -xvf gcodetools_Inkscape_v0-92-2.tar.gz -C /usr/share/inkscape/extensions
+#exit;
 
 ##Install Arduino IDE 1.0.5 /// processing /// gcompris
 
 
 #uninstall different
-cd /opt/arduino-1.6.10/
-./uninstall.sh
+#cd /opt/arduino-1.6.10/
+#./uninstall.sh
 #
 cd "$current_dir"
 sudo tar -xvf RRR1.tar.gz -C /opt
-echo "extracted RRR1.tar.gx to /opt -------------------------------------------------------------------"
-cd /opt/processing-3.4/
-echo "installing processing-3.4-------------------------------------------------------------------"
-./install.sh
+echo "extracted RRR1.tar.gz to /opt -------------------------------------------------------------------"
+cd /opt/processing-3.5.4/
+echo "installing processing-3.5.4-------------------------------------------------------------------"
+sudo ./install.sh
 cd /opt/arduino-1.0.5/
 echo "installing arduino -------------------------------------------------------------------"
-./install.sh
+sudo ./install.sh
 
 cd "$current_dir"
-sudo tar -xvf RRR1.tar.gz -C /opt
-cp -f "$current_dir/gcompris.desktop" "$homedir/Desktop"
-chmod 777 "$homedir/Desktop/gcompris.desktop"
+cp -f "$current_dir/arduino-arduinoide105.desktop" "$user_desktop"
+sudo chmod 777 "$user_desktop/arduino-arduinoide105.desktop"
+sudo cp -f "$current_dir/arduino-arduinoide105.desktop" /usr/share/applications/
+
+
+cd "$current_dir"
+sudo tar -xvf arduino-1.8.19-linux64.tar.xz -C /opt
+cd /opt/arduino-1.8.19/
+sudo ./install.sh
+sudo ./arduino-linux-setup.sh $USER
+
+#cd "$current_dir"
+#sudo tar -xvf RRR1.tar.gz -C /opt
+
+cp -f "$current_dir/gcompris.desktop" "$user_desktop"
+sudo chmod 777 "$user_desktop/gcompris.desktop"
 sudo cp -f "$current_dir/gcompris.desktop" /usr/share/applications/
-echo "I don't understand what is it but is's about gcompris.desktop-------------------------------------------------------------------"
+
+cp -f "$current_dir/arduino-arduinoide.desktop" "$user_desktop"
+sudo chmod 777 "$user_desktop/arduino-arduinoide.desktop"
+sudo cp -f "$current_dir/arduino-arduinoide.desktop" /usr/share/applications/
+
+cp -f "$current_dir/processing-pde.desktop" "$user_desktop"
+sudo chmod 777 "$user_desktop/processing-pde.desktop"
+sudo cp -f "$current_dir/processing-pde.desktop" /usr/share/applications
+
+cp -f "$current_dir/freecad.desktop" "$user_desktop"
+sudo chmod 777 "$user_desktop/freecad.desktop"
+sudo cp -f "$current_dir/freecad.desktop" /usr/share/applications/
+
+cp -f "$current_dir/inkscape.desktop" "$user_desktop"
+sudo chmod 777 "$user_desktop/inkscape.desktop"
+sudo cp -f "$current_dir/inkscape.desktop" /usr/share/applications/
 
 # copy dir with Ardunio sketch to be uploaded with Scratch4arduino  
-cp -rf "$current_dir/Arduino" "$homedir/Desktop/Arduino_S4A"
-echo "cp -rf \"$current_dir/Arduino\" \"$homedir/Desktop/Arduino_S4A\"-------------------------------------------------------------------"
+#cp -rf "$current_dir/Arduino" "$user_desktop/Arduino_S4A"
+#echo "cp -rf \"$current_dir/Arduino\" \"$user_desktop/Arduino_S4A\"-------------------------------------------------------------------"
 
 # Install Ardublock plugin to Arduino 1.0.5
 
@@ -145,11 +197,10 @@ sudo mkdir -p /opt/arduino-1.0.5/tools/ArduBlockTool/tool
 sudo cp -f "$current_dir/ardublock-russian-20130810.jar" /opt/arduino-1.0.5/tools/ArduBlockTool/tool
 echo "ardublock-russian-20130810.jar-------------------------------------------------------------------"
 
-#robbo wallpapers
-sudo cp "$current_dir/linuxmint.jpg" /usr/share/backgrounds
-sudo cp "$current_dir/robbo-wallpapers.png" /usr/share/backgrounds
-gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/robbo-wallpapers.png"
-gsettings set org.mate.background picture-filename /usr/share/backgrounds/robbo-wallpapers.png
+#install unity hub
+sudo cp -f "$current_dir/UnityHub.AppImage" "$user_desktop"
+sudo chmod 777 "$user_desktop/UnityHub.AppImage"
+
 
 ## fix
 sudo apt-get install -qqyf
@@ -164,4 +215,5 @@ sudo apt-get install -qqyf
 
 
 echo "переходим на установку Repetierhost для Robbo 3D mini"
+cd "$current_dir"
 ./2.sh
